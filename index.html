@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChronoCosmos | Cosmic Age & Zodiac Explorer</title>
+  <meta name="description" content="A flashy, celestial cosmic age calculator and zodiac identity portal with real-time ticking age down to the second.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Space Canvas & Glowing Aura Orbs -->
+  <canvas id="space-canvas"></canvas>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-pill">
+        <span class="pulse-dot"></span>
+        <span class="brand-sub">CELESTIAL CHRONOMETER</span>
+      </div>
+      <h1 class="brand-title">CHRONO<span>COSMOS</span></h1>
+      <p class="brand-tagline">Unlock your cosmic age, live celestial timeline & astrological essence</p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+      <!-- Input Card Section -->
+      <section id="input-section" class="card glass-card form-container">
+        <div class="card-glow-edge"></div>
+        <div class="form-header">
+          <div class="icon-orb">✨</div>
+          <h2>Enter Your Coordinates</h2>
+          <p>Provide your origin details to calibrate your cosmic timeline</p>
+        </div>
+
+        <form id="chrono-form" autocomplete="off">
+          <div class="form-group">
+            <label for="user-name">
+              <span class="label-icon">👤</span> Your Name
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="user-name" 
+                placeholder="e.g. Athmika, Celeste, Orion..." 
+                required 
+                maxlength="50"
+              />
+              <span class="input-focus-border"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="user-dob">
+                <span class="label-icon">📅</span> Date of Birth
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="date" 
+                  id="user-dob" 
+                  required 
+                />
+                <span class="input-focus-border"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="user-time">
+                <span class="label-icon">⏰</span> Birth Time (Default: 12:00 PM)
+              </label>
+              <div class="input-wrapper">
+                <input 
+                  type="time" 
+                  id="user-time" 
+                  value="12:00" 
+                  required 
+                />
+                <span class="input-focus-border"></span>
+              </div>
+              <span class="field-hint">Defaults to 12:00 PM noon if exact hour is unknown</span>
+            </div>
+          </div>
+
+          <button type="submit" id="calculate-btn" class="flashy-btn">
+            <span class="btn-stars">✦</span>
+            <span class="btn-text">Reveal Cosmic Destiny</span>
+            <span class="btn-glow"></span>
+            <span class="btn-arrow">➔</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- Results Section (Initially Hidden) -->
+      <section id="results-section" class="results-container hidden" aria-live="polite">
+        <!-- Greeting Hero Banner -->
+        <div class="card glass-card greeting-banner">
+          <div class="card-glow-edge"></div>
+          <div class="greeting-content">
+            <div class="greeting-badge-row">
+              <span id="ampm-badge" class="time-badge">PM PERIOD</span>
+              <span id="current-clock-badge" class="live-clock-badge">
+                <span class="live-dot"></span> <span id="current-live-time">--:--:--</span>
+              </span>
+            </div>
+            <h2 id="greeting-heading" class="greeting-text">
+              Good Evening, <span id="display-name" class="highlight-name">Traveler</span>!
+            </h2>
+            <p id="greeting-subtext" class="greeting-subtext">
+              Your celestial timeline has been synchronized with the universe.
+            </p>
+          </div>
+          <div class="greeting-icon-box">
+            <span id="greeting-icon" class="greeting-dynamic-icon">🌙</span>
+          </div>
+        </div>
+
+        <!-- Real-Time Ticking Age Grid -->
+        <div class="card glass-card chrono-dashboard">
+          <div class="card-glow-edge"></div>
+          <div class="section-title-row">
+            <div>
+              <span class="section-eyebrow">PRECISION CHRONOMETRY</span>
+              <h3 class="section-title">Your Real-Time Age Breakdown</h3>
+            </div>
+            <div class="live-ticking-indicator">
+              <span class="tick-pulse"></span>
+              <span>LIVE TICKING</span>
+            </div>
+          </div>
+
+          <div class="counter-grid">
+            <div class="counter-box" data-unit="years">
+              <div class="counter-glow"></div>
+              <span class="counter-value" id="val-years">0</span>
+              <span class="counter-label">YEARS</span>
+            </div>
+
+            <div class="counter-box" data-unit="months">
+              <div class="counter-glow"></div>
+              <span class="counter-value" id="val-months">0</span>
+              <span class="counter-label">MONTHS</span>
+            </div>
+
+            <div class="counter-box" data-unit="days">
+              <div class="counter-glow"></div>
+              <span class="counter-value" id="val-days">0</span>
+              <span class="counter-label">DAYS</span>
+            </div>
+
+            <div class="counter-box" data-unit="hours">
+              <div class="counter-glow"></div>
+              <span class="counter-value" id="val-hours">00</span>
+              <span class="counter-label">HOURS</span>
+            </div>
+
+            <div class="counter-box" data-unit="minutes">
+              <div class="counter-glow"></div>
+              <span class="counter-value" id="val-minutes">00</span>
+              <span class="counter-label">MINUTES</span>
+            </div>
+
+            <div class="counter-box ticking-accent" data-unit="seconds">
+              <div class="counter-glow"></div>
+              <span class="counter-value pulsing-second" id="val-seconds">00</span>
+              <span class="counter-label">SECONDS</span>
+            </div>
+          </div>
+
+          <!-- Progress To Next Birthday -->
+          <div class="birthday-progress-wrapper">
+            <div class="birthday-info">
+              <span>🎂 Next Birthday Countdown:</span>
+              <strong id="next-bday-text">Calculating...</strong>
+            </div>
+            <div class="progress-bar-bg">
+              <div id="birthday-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zodiac Profile Card & Elemental Identity -->
+        <div class="zodiac-grid-row">
+          <div class="card glass-card zodiac-hero-card" id="zodiac-card">
+            <div class="card-glow-edge"></div>
+            <div class="zodiac-badge-pill">
+              <span id="zodiac-element-tag">ELEMENT: FIRE</span>
+            </div>
+            <div class="zodiac-main-display">
+              <div class="zodiac-glyph-container">
+                <span id="zodiac-symbol-glyph" class="zodiac-glyph">♈</span>
+                <div class="glyph-halo"></div>
+              </div>
+              <div class="zodiac-headings">
+                <span class="zodiac-span" id="zodiac-dates">Mar 21 – Apr 19</span>
+                <h3 class="zodiac-name" id="zodiac-sign-name">Aries</h3>
+                <p class="zodiac-slogan" id="zodiac-motto">"I am, therefore I lead."</p>
+              </div>
+            </div>
+
+            <div class="zodiac-attributes-grid">
+              <div class="zodiac-attr">
+                <span class="attr-title">Ruling Planet</span>
+                <span class="attr-val" id="zodiac-planet">Mars</span>
+              </div>
+              <div class="zodiac-attr">
+                <span class="attr-title">Element</span>
+                <span class="attr-val" id="zodiac-element">Fire 🔥</span>
+              </div>
+              <div class="zodiac-attr">
+                <span class="attr-title">Modality / Quality</span>
+                <span class="attr-val" id="zodiac-modality">Cardinal</span>
+              </div>
+              <div class="zodiac-attr">
+                <span class="attr-title">Celestial Stone</span>
+                <span class="attr-val" id="zodiac-stone">Diamond</span>
+              </div>
+            </div>
+
+            <div class="zodiac-description-box">
+              <p id="zodiac-description">
+                Bold, ambitious, and pioneering. You dive headfirst into challenges with passionate determination.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cosmic Stats Strip -->
+          <div class="card glass-card cosmic-facts-card">
+            <div class="card-glow-edge"></div>
+            <h4 class="facts-title">⚡ Cosmic Life Metrics</h4>
+            <div class="fact-list">
+              <div class="fact-item">
+                <div class="fact-icon">🌎</div>
+                <div class="fact-details">
+                  <span class="fact-num" id="stat-total-days">0</span>
+                  <span class="fact-desc">Total solar cycles (days) on Earth</span>
+                </div>
+              </div>
+
+              <div class="fact-item">
+                <div class="fact-icon">💓</div>
+                <div class="fact-details">
+                  <span class="fact-num" id="stat-heartbeats">0</span>
+                  <span class="fact-desc">Estimated heartbeats sustained</span>
+                </div>
+              </div>
+
+              <div class="fact-item">
+                <div class="fact-icon">🌬️</div>
+                <div class="fact-details">
+                  <span class="fact-num" id="stat-breaths">0</span>
+                  <span class="fact-desc">Estimated breaths drawn</span>
+                </div>
+              </div>
+
+              <div class="fact-item">
+                <div class="fact-icon">🚀</div>
+                <div class="fact-details">
+                  <span class="fact-num" id="stat-orbit-distance">0</span>
+                  <span class="fact-desc">Million km traveled through space</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Action Controls -->
+        <div class="dashboard-actions">
+          <button id="copy-summary-btn" class="glass-action-btn">
+            <span>📋</span> Copy Cosmic Dossier
+          </button>
+          <button id="reset-btn" class="glass-action-btn secondary">
+            <span>↺</span> Recalculate Coordinates
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">Copied to clipboard! ✨</div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>ChronoCosmos &bull; Crafted with celestial wonder & precision mathematics</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
